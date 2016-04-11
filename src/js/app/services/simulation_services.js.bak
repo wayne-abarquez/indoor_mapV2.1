@@ -1,0 +1,106 @@
+(function(){
+'use strict';
+
+angular.module('demoApp')
+    .factory('simulationServices', ['$rootScope', '$timeout', '$q', 'gmapServices', 'airportServices', simulationServices]);
+
+    function simulationServices ($rootScope, $timeout, $q, gmapServices, airportServices) {
+        var service = {};
+
+         var infowindow = gmapServices.createInfoWindow(),
+            gate7Position = {"lat": 37.37062979352191, "lng": -121.9312124040552}
+         ;
+
+         service.start = start;
+
+        function start () {
+            guyLanded()
+                .then(function(){
+                    showNextGate();
+                });
+
+            //$rootScope.$on('arrived-at-gate', function(e, params){
+                //infowindow.setContent("You are now on gate "+params.gateNo);
+                //infowindow.setPosition(airportServices.generatedPath[airportServices.generatedPath.length - 1]);
+                //gmapServices.showInfoWindow(infowindow);
+            //});
+        }
+
+        // guy landed at gate 7
+        function guyLanded() {
+            var dfd = $q.defer();
+            $timeout(function(){
+                gmapServices.streetviewPanorama.setPosition(gate7Position);
+                gmapServices.panTo(gate7Position);
+                dfd.resolve();
+            }, 1500);
+            //.then(function(){
+            //    $timeout(function(){
+            //        infowindow.setContent('You Landed on Gate 7');
+            //        infowindow.setPosition(gate7Position);
+            //        gmapServices.showInfoWindow(infowindow);
+            //dfd.resolve();
+            //    }, 500);
+            //});
+            return dfd.promise;
+        }
+
+        // show path to next gate for connecting flight
+        function showNextGate() {
+            var dfd = $q.defer();
+
+            var gate17LatLng = {lat: 37.36734657158914, lng: -121.92779034376144};
+            var gate17Marker = _.findWhere(airportServices.gates, {gateNo: '17'});
+
+            $timeout(function () {
+                gmapServices.panTo(gate17LatLng);
+                //infowindow.setContent("You're connecting flight would be on Gate 17");
+                //infowindow.setPosition(gate17LatLng);
+                //gmapServices.showInfoWindow(infowindow);
+            }, 4000)
+                .then(function(){
+                    $timeout(function () {
+                        gmapServices.panTo(gate7Position);
+                        //infowindow.setContent("Giving directions to Gate 17...");
+                        //infowindow.setPosition(gate7Position);
+                        //gmapServices.showInfoWindow(infowindow);
+                    }, 3000)
+                        .then(function(){
+                            $timeout(function () {
+                                gmapServices.triggerEvent(gate17Marker, 'click');
+                                gmapServices.streetviewPanorama.addListener('position_changed', function () {
+                                    var mapBounds = gmapServices.map.getBounds(),
+                                        currentPosition = gmapServices.streetviewPanorama.getPosition()
+                                    ;
+                                    //infowindow.setPosition(currentPosition);
+                                    if (!mapBounds.contains(currentPosition)) gmapServices.panTo(currentPosition);
+                                });
+                            }, 4000)
+                                .then(function(){
+                                    //$('#eta-panel').webuiPopover({
+                                    //    content: 'ETA to Gate 17',
+                                    //    placement: 'right',
+                                    //    offsetTop: 65,
+                                    //    offsetLeft: 200,
+                                    //    trigger: 'manual',
+                                    //    animation: 'pop',
+                                    //    arrow: true,
+                                    //    closeable: true
+                                    //});
+                                    //
+                                    //$('#eta-panel').webuiPopover('show');
+
+                                    //infowindow.setContent("Proceeding to Gate 17.");
+                                    //$timeout(function(){
+                                    //    infowindow.close();
+                                    //}, 10000);
+                                }, 1000);
+                        });
+                });
+
+            return dfd.promise;
+        }
+
+        return service;
+    }
+}());

@@ -1,0 +1,50 @@
+<md-sidenav class="md-sidenav-left md-whiteframe-z2 map-panel"
+            md-component-id="placesPanelSidenav"
+            id="places-panel" ng-cloak>
+    <md-toolbar class="md-primary">
+        <div class="md-toolbar-tools">
+
+            <md-button class="md-icon-button md-raised" ng-click="gmapCtl.closePlacesList()">
+                <md-icon>&#xE5C4;</md-icon>
+            </md-button>
+
+            <h3 flex>
+                Nearby Places
+                <md-icon>&#xE569;</md-icon>
+            </h3>
+        </div>
+    </md-toolbar>
+
+    <md-content layout-padding ng-controller="placesPanelController as placesCtl">
+        <v-accordion class="vAccordion--default glyph" multiple>
+            <!-- add expanded attribute to open the section -->
+            <v-pane ng-repeat="(placeType,  places) in placesCtl.placesList">
+                <v-pane-header inactive ng-click="$pane.toggle()" ng-init="typeIcon = placesCtl.getMdIcon(placeType)">
+                    <md-icon ng-bind-template="{{typeIcon}}"></md-icon> <!-- md-font-icon="{{placesCtl.getMdIcon(placeType)}}" -->
+                    <span class="place-type">{{ placeType }}</span>
+                    <span class="label place-count">{{ places.length }}</span>
+                </v-pane-header>
+
+                <v-pane-content>
+                    <md-list>
+                        <md-list-item ng-repeat="place in places">
+                            <span flex="60" class="primary_title">
+                                <md-tooltip md-direction="top">{{place.name}}</md-tooltip>
+                                {{ place.name }}
+                            </span>
+                            <span flex="25" class="secondary_title">{{ place.etaTime }}</span>
+                            <md-button flex="15" class="directions-btn md-icon-button"
+                                ng-click="placesCtl.showPlaceDirections(place)">
+                                <md-tooltip md-direction="top">Show Directions</md-tooltip>
+                                <md-icon>directions</md-icon>
+                            </md-button>
+
+                        </md-list-item>
+                    </md-list>
+                </v-pane-content>
+            </v-pane>
+
+        </v-accordion>
+
+    </md-content>
+</md-sidenav>

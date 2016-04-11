@@ -1,0 +1,14 @@
+body, html, #base-container, #gmap-container {
+  height: 100%;
+  width: 100%;
+}
+
+#base-container {
+  padding: 0;
+  margin: 0;
+}
+
+#index-container {
+  width: 100%;
+  height: calc(100% - 42px);
+}

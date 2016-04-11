@@ -1,0 +1,65 @@
+$nav_bg: white;
+$nav_height: 42px;
+$icon-color: lighten($primary-color, 5%);
+$grey-darken: #212121;
+
+//@media #{$mobileMinWidth} and #{$mobileMaxWidth} {
+//  .app-title {
+//    overflow: hidden !important;
+//    //width: 150px;
+//    float: left;
+//    //margin: .5em 10px .5em 0;
+//    position: relative; /* this is important too */
+//
+//    .company-logo {
+//      position: absolute;
+//      top: -20px;
+//      left: -55px;
+//    }
+//  }
+//
+//}
+
+#app-top-nav {
+  background-color: $nav_bg;
+  color: $icon-color;
+  min-height: $nav_height;
+  max-height: $nav_height;
+  z-index: 6;
+  border-bottom: 2px solid lighten($primary-color, 10%);
+  box-shadow: 0 2px 3px 0 rgba(0, 0, 0, .26);
+
+    .md-toolbar-tools {
+      min-height: $nav_height;
+      max-height: $nav_height;
+      padding: 0px;
+
+      span.app-title {
+        height: $nav_height;
+        margin-left: 0px;
+
+        .company-logo {
+          height: 40px;
+          margin: 0;
+        }
+      }
+
+      .top-nav-app-title {
+        text-shadow: 1px 1px 2px rgba(0, 0, 0, .2);
+      }
+
+      md-icon {
+        color: $icon-color;
+      }
+
+      .powered-by {
+        display: block;
+        margin-left: 10px;
+        img {
+          height: 35px;
+          margin: 0px 5px 0px 5px;
+        }
+      }
+    }
+}
+

@@ -1,0 +1,51 @@
+#eta-panel {
+  position: absolute;
+  z-index: 2;
+  top: 40px;
+  left: 0px;
+
+  @media #{$mobileMinWidth} and #{$mobileMaxWidth} {
+    font-size: 12px;
+    width: 95%;
+    //background-color: rgba(255, 255 ,255, 0.5);
+  }
+
+  md-card-content {
+    padding: 10px;
+
+    @media #{$mobileMinWidth} and #{$mobileMaxWidth} {
+    //  background-color: rgba(255, 255, 255, 0.5);
+      padding: 2px !important;
+    }
+  }
+
+  .eta-value {
+    color: #7f8c8d;
+    float: right;
+  }
+
+  .eta-label {
+    font-size: 13px;
+  }
+
+  .time-remaining-input-container {
+    md-input-container {
+      height: 30px;
+      width: 80px;
+      margin: 0px;
+      padding: 0px;
+    }
+
+    button {
+      width: 30px;
+      padding: 0px;
+      margin: 0px;
+    }
+  }
+
+
+  p {
+    padding: 5px;
+    margin: 0px;
+  }
+}

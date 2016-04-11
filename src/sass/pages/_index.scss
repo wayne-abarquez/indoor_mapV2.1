@@ -1,0 +1,70 @@
+[ng\:cloak], [ng-cloak], [data-ng-cloak], [x-ng-cloak], .ng-cloak, .x-ng-cloak {
+  display: none !important;
+}
+
+#index-container {
+  padding: 0;
+  margin: 0;
+  width: 100%;
+}
+
+/* Remove Padding on Menu */
+md-menu-content {
+  padding-top: 0px;
+  padding-bottom: 0px;
+}
+
+#nearby-places-btn {
+  position: absolute;
+  z-index: 2;
+  top: 150px;
+  left: 10px;
+}
+
+#show-heatmap-btn {
+  position: absolute;
+  z-index: 2;
+  top: 95px;
+  right: 10px;
+
+  @media #{$mobileMinWidth} and #{$mobileMaxWidth} {
+    min-width: 0;
+    position: absolute;
+    z-index: 2;
+    top: 40%;
+    right: 10px;
+  }
+}
+
+#show-streetview-btn {
+  position: absolute;
+  z-index: 2;
+  bottom: 15px;
+  right: 10px;
+}
+
+#show-proceed-btn {
+  position: absolute;
+  z-index: 2;
+  top: 60px;
+  left: calc(50% - 92px);
+
+  @media #{$mobileMinWidth} and #{$mobileMaxWidth} {
+    border-radius: 50%;
+    min-width: 0;
+    width: 40px;
+    min-height: 0;
+    height: 40px;
+
+    position: absolute;
+    z-index: 2;
+    top: 47%;
+    left: initial;
+    right: 10px;
+
+
+    .btn-text {
+      display:none;
+    }
+  }
+}
