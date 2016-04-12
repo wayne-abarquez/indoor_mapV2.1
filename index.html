@@ -65,7 +65,14 @@
                 </md-button>
                 -->
 
-                <md-button class="md-icon-button md-primary"
+                <md-button class="md-icon-button md-raised"
+                           id="show-eta-panel-btn"
+                           ng-hide="gmapCtl.showEtaPanel"
+                           ng-click="gmapCtl.showETAPanelAction()">
+                    <md-icon>&#xE5CC;</md-icon>
+                </md-button>
+
+                <md-button class="md-icon-button"
                            id="show-heatmap-btn"
                            ng-click="gmapCtl.hideHeatmap = !gmapCtl.hideHeatmap"
                            ng-class="{'md-raised': !gmapCtl.hideHeatmap}">
@@ -86,7 +93,7 @@
                     <md-icon>&#xE569;</md-icon>
                 </md-button>
 
-                <md-button class="md-icon-button md-raised md-primary"
+                <md-button class="md-icon-button md-raised"
                            id="show-streetview-btn"
                            ng-click="gmapCtl.showStreetviewPanel()"
                            ng-hide="gmapCtl.showStreetview">

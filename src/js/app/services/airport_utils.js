@@ -16,6 +16,7 @@ angular.module('demoApp')
         service.computeETARaw = computeETARaw;
         service.computeETA = computeETA;
         service.computeETAByDistance = computeETAByDistance;
+        service.computeETAByPath = computeETAByPath;
         service.getPlaceIcon = getPlaceIcon;
         service.extractCoords = extractCoords;
         service.extractAndCastCoords = extractAndCastCoords;
@@ -85,6 +86,11 @@ angular.module('demoApp')
 
         function computeETAByDistance(distance) {
             return service.computeTimeRaw(distance);
+        }
+
+        function computeETAByPath (path) {
+            var distance = computeLength(extractAndCastCoords(path));
+            return computeTimeRaw(distance);
         }
 
         function getPlaceIcon(placeType) {

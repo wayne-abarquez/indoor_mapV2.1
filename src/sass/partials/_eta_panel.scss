@@ -4,11 +4,23 @@
   top: 40px;
   left: 0px;
 
-  @media #{$mobileMinWidth} and #{$mobileMaxWidth} {
-    font-size: 12px;
-    width: 95%;
-    //background-color: rgba(255, 255 ,255, 0.5);
+  #close-eta-panel-btn {
+    display: none;
+    margin: 0px;
+    padding:3px;
   }
+
+  @media #{$mobileMinWidth} and #{$mobileMaxWidth} {
+    font-size: 13px;
+    width: 60%;
+    padding-right: 0px;
+
+    #close-eta-panel-btn {
+      display: inline-block;
+    }
+  }
+
+
 
   md-card-content {
     padding: 10px;

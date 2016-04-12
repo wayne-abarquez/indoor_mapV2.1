@@ -2,9 +2,9 @@
 'use strict';
 
 angular.module('demoApp')
-    .factory('placesServices', ['$rootScope', 'gmapServices', 'AIRPORT_PLACES', 'airportServices', 'airportUtils', placesServices]);
+    .factory('placesServices', ['$rootScope', 'gmapServices', 'AIRPORT_PLACES', 'airportServices', 'airportUtils', 'timeUtils', 'alertServices', placesServices]);
 
-    function placesServices ($rootScope, gmapServices, AIRPORT_PLACES, airportServices, airportUtils) {
+    function placesServices ($rootScope, gmapServices, AIRPORT_PLACES, airportServices, airportUtils, timeUtils, alertServices) {
         var service = {};
 
         service.places = [];
@@ -35,19 +35,29 @@ angular.module('demoApp')
                 gmapServices.addListener(marker, 'click', function () {
                     //placeInfowindow.setContent(createPlaceContent(place));
                     //gmapServices.showInfoWindow(placeInfowindow, marker);
-
-                    if(service.lastPlacePolyline) gmapServices.hidePolyline(service.lastPlacePolyline);
-
                     var _placePosition = marker.getPosition();
-
                     service.markerGeneratedPath.path = computeGeneratedPath(airportServices.startPosition, _placePosition);
+                    var etaToPlace = airportUtils.computeETAByPath(service.markerGeneratedPath.path);
+
+                    // Check if can add place within time remaining
+                    var etaToPlaceInSeconds = timeUtils.convertMinToSec(etaToPlace);
+                    var etaToDestInSeconds = timeUtils.convertMinToSec($rootScope.etaToDest - etaToPlace);
+                    var totalETASeconds = etaToDestInSeconds + etaToPlaceInSeconds;
+                    console.log('elapseSeconds: '+ $rootScope.elapseSeconds+' totalETASeconds: '+totalETASeconds);
+                    //console.log('$rootScope.etaToDest: '+ $rootScope.etaToDest+ ' etaToPlace: '+ etaToPlace);
+                    if($rootScope.elapseSeconds <= totalETASeconds) {
+                        alertServices.showCannotAddPlace(marker.name, Math.floor(timeUtils.convertSecToMin($rootScope.elapseSeconds)));
+                        return;
+                    }
+
+                    if (service.lastPlacePolyline) gmapServices.hidePolyline(service.lastPlacePolyline);
+
+                    service.lastPlacePolyline = marker.polyline;
 
                     gmapServices.panTo(_placePosition);
                     gmapServices.showPolyline(marker.polyline);
 
-                    service.lastPlacePolyline = marker.polyline;
-
-                    $rootScope.$broadcast('new-place-route', {stop: marker.stopPosition, placePosition: _placePosition, placeName: marker.name, placePath: service.markerGeneratedPath.path});
+                    $rootScope.$broadcast('new-place-route', {stop: marker.stopPosition, placePosition: _placePosition, placeName: marker.name, placePath: service.markerGeneratedPath.path, eta: etaToPlace});
 
                     // proceed to place
                     //      * get the nearest latlng attached to the path (polyline)

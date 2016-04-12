@@ -20,6 +20,9 @@ angular.module('demoApp')
             destination = null
         ;
 
+        var computedPath = null,
+            selectedGate = null;
+
         service.completePath = null;
         service.generatedPath = null;
         service.placeGeneratedPath = null;
@@ -32,8 +35,8 @@ angular.module('demoApp')
 
         var defaultPitch = -7,
             directionsPathPolyline = null,
-            animationSpeedByMillis = 2000,
-            //animationSpeedByMillis = 500,
+            //animationSpeedByMillis = 2000,
+            animationSpeedByMillis = 500,
             pathCtr = 0,
             animationTimeout = null
         ;
@@ -58,7 +61,7 @@ angular.module('demoApp')
         service.continueAnimation = continueAnimation;
         service.startMoving = startMoving;
 
-        var persons = [];
+        //var persons = [];
 
         function initialize () {
             gmapServices.defaultLatLng = startPoint;
@@ -72,7 +75,6 @@ angular.module('demoApp')
 
             $rootScope.$on('new-place-route', function(event, params){
                 arrivedAtPlace = false;
-
                 placePosition = params.placePosition;
 
                 gmapServices.streetviewPanorama.setPosition(service.startPosition);
@@ -85,29 +87,25 @@ angular.module('demoApp')
 
                 recomputeMainPath(params.placePosition);
 
-                service.stopAnimation = true;
-
-                if(placeAnimationTimeout) {
-                    $timeout.cancel(placeAnimationTimeout);
-                }
+                cancelAnimation(placeAnimationTimeout);
+                cancelAnimation(animationTimeout);
+                pathCtr = 0;
             });
 
-            gmapServices.addMapListener('click', function(e){
-                var pos = e.latLng.toJSON();
-                persons.push(pos);
-                //console.log('Clicked Position: ', pos);
-            });
-
-            $(document).keypress(function (e) {
-                if (e.which == 32) {
-                    //alert('You pressed enter!');
-                    console.log('Persons: ', JSON.stringify(persons));
-                } else if (e.which == 13) {
-                    persons = [];
-                    console.log('Persons: ', JSON.stringify(persons));
-                }
-            });
-
+            //gmapServices.addMapListener('click', function(e){
+            //    var pos = e.latLng.toJSON();
+            //    persons.push(pos);
+            //    //console.log('Clicked Position: ', pos);
+            //});
+            //
+            //$(document).keypress(function (e) {
+            //    if (e.which == 32) {
+            //        console.log('Persons: ', JSON.stringify(persons));
+            //    } else if (e.which == 13) {
+            //        persons = [];
+            //        console.log('Persons: ', JSON.stringify(persons));
+            //    }
+            //});
         }
 
         function loadPath () {
@@ -141,11 +139,13 @@ angular.module('demoApp')
                 marker.gateNo = gate.gateNo;
 
                 gmapServices.addListener(marker, 'click', function () {
-                    if (animationTimeout) {
-                        $timeout.cancel(animationTimeout);
-                        pathCtr = 0;
-                        animationTimeout = null;
-                    }
+                    //if (animationTimeout) {
+                    //    $timeout.cancel(animationTimeout);
+                    //    animationTimeout = null;
+                    //}
+                    cancelAnimation(placeAnimationTimeout);
+                    cancelAnimation(animationTimeout);
+                    pathCtr = 0;
 
                     proceedGate(this.gate);
 
@@ -159,9 +159,6 @@ angular.module('demoApp')
 
             gmapServices.showMarkers(service.gates);
         }
-
-        var computedPath = null;
-        var selectedGate = null;
 
         function proceedGate(gate) {
             service.placeStop = null;
@@ -252,12 +249,6 @@ angular.module('demoApp')
 
 
         function startAnimation(paths, gate) {
-            if (service.stopAnimation) {
-                pathCtr = 0;
-                service.stopAnimation = false;
-                return;
-            }
-
             if (pathCtr >= paths.length) {
                 pathCtr = 0;
                 gmapServices.streetviewPanorama.setPov({
@@ -308,12 +299,6 @@ angular.module('demoApp')
 
 
         function startPlaceAnimation(paths) {
-            //if (service.stopAnimation) {
-            //    pathCtr = 0;
-            //    service.stopAnimation = false;
-            //    return;
-            //}
-
             if (pathCtr >= paths.length) {
                 pathCtr = 0;
                 $rootScope.$broadcast('arrived-at-place');
@@ -390,6 +375,10 @@ angular.module('demoApp')
             }
 
             gmapServices.showHeatmap(service.peopleHeatmap);
+        }
+
+        function cancelAnimation(animation){
+            if (animation) $timeout.cancel(animation);
         }
 
         return service;

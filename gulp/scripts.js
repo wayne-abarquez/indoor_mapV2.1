@@ -20,7 +20,8 @@ gulp.task('vendor-scripts', function () {
         paths.bower + '/angular-material/angular-material.js',
         paths.bower + '/sweetalert/dist/sweetalert.min.js',
         paths.bower + '/ngSweetAlert/SweetAlert.min.js',
-        paths.bower + '/v-accordion/dist/v-accordion.min.js'
+        paths.bower + '/v-accordion/dist/v-accordion.min.js',
+        paths.bower + 'angular-responsive/src/responsive-directive.js'
     ])
         .pipe($.concat('vendor.min.js'))
         .pipe($.uglify({mangle: false}).on('error', $.util.log))

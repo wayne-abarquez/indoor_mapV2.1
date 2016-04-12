@@ -16,7 +16,10 @@ angular.module('demoApp')
         function start () {
             guyLanded()
                 .then(function(){
-                    showNextGate();
+                    showNextGate()
+                        .then(function(){
+                           setTimeRemaining(13);
+                        });
                 });
         }
 
@@ -34,6 +37,8 @@ angular.module('demoApp')
 
         // show path to next gate for connecting flight
         function showNextGate() {
+            var dfd = $q.defer();
+
             var gate17Marker = _.findWhere(airportServices.gates, {gateNo: '17'});
 
             $timeout(function () {
@@ -44,7 +49,18 @@ angular.module('demoApp')
                         ;
                     if (!mapBounds.contains(currentPosition)) gmapServices.panTo(currentPosition);
                 });
+
+                dfd.resolve();
+
             }, 300);
+            return dfd.promise;
+        }
+
+        function setTimeRemaining (timeRemaining) {
+            $timeout(function () {
+                // set time remaining
+                $rootScope.$broadcast('set-time-remaining', {time: timeRemaining});
+            }, 0);
         }
 
         return service;

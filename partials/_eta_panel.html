@@ -2,35 +2,51 @@
          ng-controller="etaPanelController as etaCtl"
          ng-show="gmapCtl.showEtaPanel">
     <md-card-content>
+        <div layout="row">
+            <div layout="row">
+                <div flex>
+                    <md-button class="md-icon-button md-mini" id="close-eta-panel-btn" ng-click="gmapCtl.hideETAPanel()">
+                        <md-icon>&#xE314;</md-icon>
+                    </md-button>
+                </div>
+            </div>
 
-        <p ng-show="etaCtl.totalEta != null">
-            <b>Time Remaining:&nbsp;</b>
-            <span class="eta-value" ng-click="etaCtl.showTimeRemainingInput = true"
-                  ng-hide="etaCtl.showTimeRemainingInput"
-                  ng-style="(etaCtl.timeRemaining.elapseFormatted.minutes < 1 && etaCtl.timeRemaining.input !== null) && {'color':'#e74c3c'}">
-                {{etaCtl.timeRemaining.elapse==null ? '&lt;click here to set time&gt;' : etaCtl.timeRemaining.elapseFormatted.minutes + ':' +  etaCtl.timeRemaining.elapseFormatted.seconds}}
-            </span>
+            <div flex="100" layout="column">
+                <div ng-show="etaCtl.totalEta != null">
+                    <b>Time to Departure:&nbsp;</b>
+                    <span class="eta-value" ng-click="etaCtl.showTimeRemainingInput = true"
+                          ng-hide="etaCtl.showTimeRemainingInput"
+                          ng-style="etaCtl.dangerTimeRemaining && {'color':'#e74c3c'}"> <!-- ng-style="(etaCtl.timeRemaining.elapseFormatted.minutes < 1 && etaCtl.timeRemaining.input !== null) && {'color':'#e74c3c'}"-->
+                        {{etaCtl.timeRemaining.elapse==null ? '&lt;click here to set time&gt;' : etaCtl.timeRemaining.elapseFormatted.minutes + ':' +  etaCtl.timeRemaining.elapseFormatted.seconds}}
+                    </span>
 
-            <span class="time-remaining-input-container" ng-show="etaCtl.showTimeRemainingInput">
-                <md-input-container md-no-float>
-                    <input type="number" min="{{etaCtl.totalEta}}" name="timeRemaining" placeholder="Minutes"
-                           ng-model="etaCtl.timeRemaining.input"
-                           ng-keydown="etaCtl.timeRemainingInputKeydown($event)"
-                           ng-blur="etaCtl.setTimeRemaining()"
-                           autofocus>
-                </md-input-container>
+                    <span class="time-remaining-input-container" ng-show="etaCtl.showTimeRemainingInput">
+                        <md-input-container md-no-float>
+                            <input type="number" min="{{etaCtl.totalEta}}" name="timeRemaining" placeholder="Minutes"
+                                   ng-model="etaCtl.timeRemaining.input"
+                                   ng-keydown="etaCtl.timeRemainingInputKeydown($event)"
+                                   ng-blur="etaCtl.setTimeRemaining()"
+                                   autofocus>
+                        </md-input-container>
 
-                <md-button class="md-icon-button" ng-click="etaCtl.setTimeRemaining()">
-                    <md-icon>&#xE161;</md-icon>
-                </md-button>
-            </span>
+                        <md-button class="md-icon-button" ng-click="etaCtl.setTimeRemaining()">
+                            <md-icon>&#xE161;</md-icon>
+                        </md-button>
+                    </span>
 
-            <md-divider style="margin-top:5px;"></md-divider>
-        </p>
+                    <md-divider style="margin-top:5px;"></md-divider>
+                </div>
 
+                <div>
+                    <p ng-show="etaCtl.etaToPlace != null || etaCtl.placeName"><b>{{etaCtl.placeName}}</b> ETA: <span
+                            class="eta-value" style="padding-bottom: 0px;">{{ etaCtl.etaToPlace
+                | setDecimal:1 }} mins</span></p>
 
-        <p ng-show="etaCtl.etaToPlace != null || etaCtl.placeName"><b>{{etaCtl.placeName}}</b> ETA: <span class="eta-value">{{ etaCtl.etaToPlace
-            | setDecimal:1 }} mins</span></p>
-        <p><b>Gate {{etaCtl.gateNo}}</b> ETA: <span class="eta-value">{{ etaCtl.etaToDest | setDecimal:1 }} mins</span></p>
+                    <p style="padding-bottom: 0px;"><b>Gate {{etaCtl.gateNo}}</b> ETA: <span
+                            class="eta-value">{{ etaCtl.etaToDest | setDecimal:1 }} mins</span></p>
+                </div>
+
+            </div>
+        </div>
     </md-card-content>
 </md-card>

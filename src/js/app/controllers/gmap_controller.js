@@ -20,6 +20,8 @@ angular.module('demoApp')
         vm.triggerProceedGate = triggerProceedGate;
         vm.showStreetviewPanel = showStreetviewPanel;
         vm.closePlacesList =  closePlacesList;
+        vm.hideETAPanel = hideETAPanel;
+        vm.showETAPanelAction = showETAPanelAction;
 
         vm.proceedToDirection = proceedToDirection;
 
@@ -57,10 +59,9 @@ angular.module('demoApp')
             });
 
             $rootScope.$on('new-place-route', function (ev, params) {
-                //airportServices.continueAnimation();
-                //airportServices.placeStop = params.stop;
-
-                vm.showProceedButton = true;
+                $scope.$apply(function(){
+                    vm.showProceedButton = true;
+                });
             });
 
             $rootScope.$on('marker-clicked', function(){
@@ -126,6 +127,14 @@ angular.module('demoApp')
         function proceedToDirection () {
             airportServices.startMoving();
             vm.showProceedButton = false;
+        }
+
+        function hideETAPanel () {
+            vm.showEtaPanel = false;
+        }
+
+        function showETAPanelAction () {
+            vm.showEtaPanel = true;
         }
 
         /* End of Streetview Functions */

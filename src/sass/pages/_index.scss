@@ -17,8 +17,25 @@ md-menu-content {
 #nearby-places-btn {
   position: absolute;
   z-index: 2;
-  top: 150px;
+  top: 170px;
   left: 10px;
+
+  @media #{$mobileMinWidth} and #{$mobileMaxWidth} {
+    left: 0px;
+  }
+}
+
+#show-eta-panel-btn {
+  display: none;
+  position: absolute;
+  z-index: 2;
+  top: 50px;
+  left: 10px;
+
+  @media #{$mobileMinWidth} and #{$mobileMaxWidth} {
+    display: inline-block;
+    left: 0px;
+  }
 }
 
 #show-heatmap-btn {
@@ -31,8 +48,8 @@ md-menu-content {
     min-width: 0;
     position: absolute;
     z-index: 2;
-    top: 40%;
-    right: 10px;
+    top: calc(15% + 50px);
+    right: 0px;
   }
 }
 
@@ -58,10 +75,9 @@ md-menu-content {
 
     position: absolute;
     z-index: 2;
-    top: 47%;
+    top: 14%;
     left: initial;
-    right: 10px;
-
+    right: 0px;
 
     .btn-text {
       display:none;
