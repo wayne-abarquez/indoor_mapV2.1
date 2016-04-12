@@ -35,8 +35,8 @@ angular.module('demoApp')
 
         var defaultPitch = -7,
             directionsPathPolyline = null,
-            //animationSpeedByMillis = 2000,
-            animationSpeedByMillis = 500,
+            animationSpeedByMillis = 2000,
+            //animationSpeedByMillis = 500,
             pathCtr = 0,
             animationTimeout = null
         ;
